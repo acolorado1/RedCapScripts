@@ -1,16 +1,6 @@
----
-title: "README"
-author: "Angela Sofia Colorado"
-date: '2022-09-22'
-output:
-  markdown_github: default
-  md_document:
-    variant: markdown_github
----
+# Making RedCap files computer readable 
+This set of scripts was used to make a longitudinal study done in RedCap more easy for programs to interpret.
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
 
 ## Workflow 
 
