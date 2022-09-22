@@ -2,7 +2,10 @@
 title: "README"
 author: "Angela Sofia Colorado"
 date: '2022-09-22'
-output: markdown_github
+output:
+  markdown_github: default
+  md_document:
+    variant: markdown_github
 ---
 
 ```{r setup, include=FALSE}
