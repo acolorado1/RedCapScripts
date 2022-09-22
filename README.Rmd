@@ -2,29 +2,25 @@
 title: "README"
 author: "Angela Sofia Colorado"
 date: '2022-09-22'
-output: html_document
+output: markdown_github
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## R Markdown
+## Workflow 
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+1. **DataReadInAnfSummary.R** -> takes original data and I performed a santify check 
+2. **SeparateIndividualRecords.R** -> separates original file using the *Complete?* columns, here can individually export the files as CSV 
+3. **CreateFullData.R** -> takes individual surveys and compiles them into one computer readable file 
+4. **QueryData.R** -> make plots and tables of the data 
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+### Note
 
-```{r cars}
-summary(cars)
-```
+More information can be found in the **RedCapFileFormattingReport** that was emailed. 
 
-## Including Plots
+SOP for RedCap data coming soon...
 
-You can also embed plots, for example:
 
-```{r pressure, echo=FALSE}
-plot(pressure)
-```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
