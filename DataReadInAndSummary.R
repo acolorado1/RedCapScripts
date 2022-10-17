@@ -1,9 +1,9 @@
 # check dependencies 
 require(readr)
 
-# path to redcap file and readin 
-filepath <- "./DietModificationStud_DATA_LABELS_2020-07-07_1722.csv"
-redcap_file <- read_csv(filepath)
+# path to redcap file and readin
+filepath <- "../../redcap/DietModificationStud_DATA_LABELS_2020-07-07_1722.csv"
+redcap_file <- read.csv(filepath, check.names = FALSE)
 
 # sanity checks 
 # this data set should have 8 complete columns 

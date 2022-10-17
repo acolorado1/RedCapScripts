@@ -9,7 +9,7 @@ colnames(Week2)[2] <- "DateOfVisit"
 colnames(Week4)[2] <- "DateOfVisit"
 
 ### had to change this for consistency 
-colnames(Week0)[29] <- "Date.blood.collected.for.chronic.immune.activation..HLADR.CD38...mm.dd.yyyy."
+colnames(Week0)[29] <- "Date blood collected for chronic immune activation (HLADR/CD38) (mm/dd/yyyy)"
 
 ## Second: Find colnames intersect and rbind this data frame 
 W0_colnames <- colnames(Week0)
@@ -31,12 +31,6 @@ W0_sub_out <- Week0[, -which(names(Week0) %in% colnames_outersect)]
 W2_sub_out <- Week2[, -which(names(Week2) %in% colnames_outersect)]
 W4_sub_out <- Week4[, -which(names(Week4) %in% colnames_outersect)]
 
-# discovered this set of columns that should have been the same 
-'W0_sub_out$Date.blood.was.collected.for.chronic.immune.activation..HLADR.CD38...mm.dd.yyyy.
-W2_sub_out$Date.blood.collected.for.chronic.immune.activation..HLADR.CD38...mm.dd.yyyy.
-W4_sub_out$Date.blood.collected.for.chronic.immune.activation..HLADR.CD38...mm.dd.yyyy.'
-
-
 # merge all data 
 full_merge <- GISymptomsAllTimes %>% 
   full_join(Screen, by = "RecordID")%>% 
@@ -56,11 +50,44 @@ full_merge <- subset(full_merge, select = -c(RecordID.y, Week.y))
 colnames(full_merge)[1] <- "RecordID"
 colnames(full_merge)[25] <- "Week"
 
+# fix header files using mapping file
+map <- read.csv("../../redcap/headers-redcap-mapping-from-abigail.txt", 
+                check.names = FALSE, sep = "\t")
 
-# export as CVS file 
-write.csv(full_merge,"./OutputData/FULL_redcap_data_reformatted.csv", 
+# Add custom fixes to mapping file
+custom_vars = c("RecordID", "Week","SampleID",
+                "If 'yes', indicate specific drug:.1", 
+                "Was the optional flexible sigmoidoscopy/mucosal biopsy procedure performed at this visit?.x",
+                "Var.40",".1",
+                "Was the optional flexible sigmoidoscopy/mucosal biopsy procedure performed at this visit?.y",
+                "DateOfVisit")
+
+custom_vars_fixed = c("RecordID", "Week", "SampleID", 
+                      "cholest_type", "Mucosal_biopsyT1", 
+                      "Unknown_var", "Patient_report", "Mucosal_biopsyT3", 
+                      "DateOfVisit")
+
+map = map %>% 
+  add_row(original_category = custom_vars, final_category = custom_vars_fixed)
+
+# Trim leading and trailing white space in map and colnames
+map$final_category <- trimws(map$final_category, which = "both")
+map$original_category <- trimws(map$original_category, which = "both")
+
+colnames(full_merge) = trimws(colnames(full_merge), which = "both")
+
+# make a copy to repair all headers using mapping file
+full_merge_repaired_df = full_merge
+
+colnames(full_merge_repaired_df) <- map$final_category[
+  match(colnames(full_merge),map$original_category)]
+
+# There will be "NA" values for things that were not included in mapping
+# These must be added to the mapping file using project specific vars
+df_verify = data.frame(full_merge_original = colnames(full_merge), 
+                       full_merge_repaired = colnames(full_merge_repaired_df))
+
+View(df_verify)
+# export as CVS file
+write.csv(full_merge_repaired_df,"./OutputData/FULL_redcap_data_reformatted.csv",
           row.names = F)
-
-
-
-
