@@ -50,7 +50,7 @@ filenames_list <- list(Screen,LifestyleQs,Week0,GISymptoms0,
 filenames_list <- lapply(1:length(filenames_list), function(i){ 
   df <- filenames_list[[i]]
   df <- df[1:length(df)-1]
-  df <- data.frame(RecordID = IDcolumn, df)
+  df <- data.frame(RecordID = IDcolumn, df, check.names = FALSE)
   columnanmes <- colnames(df)
   columnanmes <- gsub("\\.\\.\\.[0−9]*$","",columnanmes)
   colnames(df) <- columnanmes
